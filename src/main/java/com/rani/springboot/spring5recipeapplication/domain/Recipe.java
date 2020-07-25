@@ -5,6 +5,7 @@ import java.util.Set;
 
 @Entity
 public class Recipe {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,17 +17,23 @@ public class Recipe {
     private String ur;
     private String direction;
 
-    // to do add
-    // private Difficulty difficulty
 
-    @OneToMany(cascade = CascadeType.ALL ,mappedBy = "recipe")
-    private Set<Ingredient> ingriedients;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    private Set<Ingredient> ingredients;
 
     @Lob
-     private Byte image;
+    private Byte image;
 
-    @OneToOne(cascade = CascadeType.ALL )
-     private Notes notes;
+    @Enumerated(value = EnumType.STRING)
+    private Difficulty difficulty;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Notes notes;
+
+    @ManyToMany
+    @JoinTable(name = "recipe_category", joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
 
     public Long getId() {
         return id;
@@ -108,12 +115,28 @@ public class Recipe {
         this.notes = notes;
     }
 
-    public Set<Ingredient> getIngriedients() {
-        return ingriedients;
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
     }
 
-    public void setIngriedients(Set<Ingredient> ingriedients) {
-        this.ingriedients = ingriedients;
+    public void setIngredients(Set<Ingredient> ingriedients) {
+        this.ingredients = ingriedients;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }
 
